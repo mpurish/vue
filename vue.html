@@ -1,0 +1,796 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>vue</title>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/what-input/5.2.10/what-input.min.js"></script>
+
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap");
+body {
+  margin: 0;
+  padding: 0; }
+
+#app {
+  font-family: "Open Sans", Arial, sans-serif;
+  text-align: center;
+  color: #2c3e50; }
+
+a {
+  text-decoration: none;
+  color: #676564; }
+  a:hover {
+    text-decoration: none; }
+
+@media (min-width: 1200px) {
+  .container-xl {
+    max-width: 1440px !important; } }
+[data-whatinput="keyboard"] *:focus {
+  outline: 3px solid red; }
+
+.hero-container {
+  position: relative; }
+  .hero-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 264px;
+    background: linear-gradient(180deg, white 0%, rgba(255, 255, 255, 0.9) 28%, rgba(255, 255, 255, 0) 100%);
+    z-index: 2;
+    pointer-events: none; }
+  .hero-container::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+    z-index: 2;
+    pointer-events: none; }
+
+.hero {
+  position: relative;
+  overflow-x: scroll;
+  height: auto; }
+  @media (min-width: 768px) {
+    .hero {
+      cursor: default !important; } }
+  .hero .tag-details {
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0px 0px 2px 0.5px rgba(21, 21, 21, 0.05), 0px 1px 5px 0px rgba(21, 21, 21, 0.15);
+    position: absolute;
+    z-index: 5;
+    display: block;
+    padding: 1.125rem 1.25rem;
+    text-align: left;
+    width: 315px;
+    max-width: 315px;
+    opacity: 0;
+    visibility: hidden; }
+    @media (max-width: 768px) {
+      .hero .tag-details {
+        left: 50% !important;
+        transform: translate(-50%, 0); } }
+    .hero .tag-details.top {
+      bottom: calc(100% + 10px); }
+      @media (min-width: 768px) {
+        .hero .tag-details.top {
+          bottom: -100%; } }
+    .hero .tag-details.bottom {
+      top: calc(100% + 10px); }
+      @media (min-width: 768px) {
+        .hero .tag-details.bottom {
+          top: -100%; } }
+    .hero .tag-details.right {
+      left: auto; }
+      @media (min-width: 768px) {
+        .hero .tag-details.right {
+          left: calc(100% + 10px); } }
+    .hero .tag-details.left {
+      right: auto; }
+      @media (min-width: 768px) {
+        .hero .tag-details.left {
+          right: calc(100% + 10px); } }
+    @media (max-width: 768px) {
+      .hero .tag-details.mobile-left {
+        left: -300% !important; } }
+    @media (min-width: 768px) and (max-width: 900px) {
+      .hero .tag-details.tablet-left {
+        left: 20%;
+        top: 120%; } }
+    .hero .tag-details.forced-center {
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      position: fixed !important;
+      top: auto !important;
+      bottom: 30% !important; }
+    .hero .tag-details .top-details {
+      display: flex;
+      border-bottom: 1px solid #dddddd;
+      padding-bottom: 1em;
+      margin-bottom: 0.5em;
+      justify-content: space-between; }
+      .hero .tag-details .top-details p:first-of-type {
+        font-size: 1.08em; }
+      .hero .tag-details .top-details p {
+        font-size: 0.8125em;
+        margin-bottom: 0;
+        padding-bottom: 0; }
+      .hero .tag-details .top-details button {
+        border-radius: 5px;
+        font-size: 0.8125em;
+        white-space: nowrap;
+        padding: 0.5em 0.8125em; }
+    .hero .tag-details .bottom-details a {
+      font-size: 0.8125em; }
+  .hero .drag-to-explore {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5em 1em;
+    width: auto;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    bottom: 5vh;
+    z-index: 5;
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.35s ease-out; }
+    @media (min-width: 768px) {
+      .hero .drag-to-explore {
+        cursor: default !important;
+        opacity: 0; } }
+    .hero .drag-to-explore.hidden {
+      opacity: 0; }
+    .hero .drag-to-explore p {
+      margin: 0 1em;
+      padding: 0;
+      font-size: .9375em;
+      color: #f7f5f2;
+      font-weight: 400;
+      line-height: 1.467; }
+    .hero .drag-to-explore svg:first-of-type {
+      transform: rotate(180deg); }
+    .hero .drag-to-explore svg * {
+      fill: white; }
+  .hero__background {
+    position: relative; }
+    .hero__background picture,
+    .hero__background img {
+      width: auto;
+      height: 90vh;
+      object-fit: cover;
+      object-position: top;
+      overflow: visible;
+      pointer-events: none;
+      user-select: none; }
+      @media (min-width: 768px) {
+        .hero__background picture,
+        .hero__background img {
+          width: 100%;
+          height: auto;
+          object-fit: cover;
+          object-position: top; } }
+  .hero__main {
+    height: 90vh;
+    width: 100vw;
+    background: transparent;
+    position: sticky;
+    left: 0;
+    z-index: 12;
+    transform: translateY(90vh);
+    margin-top: -90vh;
+    pointer-events: none; }
+    @media (min-width: 768px) {
+      .hero__main {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0);
+        margin: 0;
+        width: auto;
+        height: 100%; } }
+    @media (min-width: 900px) {
+      .hero__main {
+        position: absolute;
+        left: 8.4375em;
+        transform: none;
+        margin: 0;
+        height: auto; } }
+  .hero__headline {
+    padding-top: 3.125em;
+    pointer-events: auto;
+    user-select: text;
+    cursor: default; }
+    @media (min-width: 900px) {
+      .hero__headline {
+        padding-top: 3.3125em;
+        text-align: left; } }
+    @media (min-width: 1200px) {
+      .hero__headline {
+        padding-top: 5.3125em;
+        text-align: left; } }
+    .hero__headline h1 {
+      color: #dc6666;
+      font-size: 2.625rem;
+      line-height: 1;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      font-weight: 600; }
+      @media (min-width: 900px) {
+        .hero__headline h1 {
+          font-size: 3em;
+          text-align: left;
+          margin-bottom: 10px; } }
+      @media (min-width: 1200px) {
+        .hero__headline h1 {
+          font-size: 5em; } }
+    .hero__headline p {
+      text-align: center;
+      color: #676564;
+      padding: 1em 0 0;
+      margin: 0;
+      font-weight: 600; }
+      @media (min-width: 900px) {
+        .hero__headline p {
+          text-align: left;
+          padding: 0; } }
+    .hero__headline .hero-subhero {
+      font-size: 1.08125em;
+      max-width: 320px;
+      margin: auto; }
+      @media (min-width: 900px) {
+        .hero__headline .hero-subhero {
+          font-size: 1.375em;
+          max-width: none;
+          margin: 0 0 4px; } }
+    .hero__headline .hero-text {
+      font-size: 0.9375em;
+      max-width: 320px;
+      margin: 0 auto 1.25em; }
+      @media (min-width: 900px) {
+        .hero__headline .hero-text {
+          font-size: 1.125em;
+          margin: 0 0 2em;
+          max-width: none; } }
+    .hero__headline .hero-cta {
+      display: inline-block; }
+    @media (min-width: 900px) {
+      .hero__headline button {
+        margin: 0;
+        font-size: 1.0625em; } }
+
+.tag {
+  background: white;
+  border-radius: 15px;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  box-shadow: 0px 0px 2px 0.5px rgba(21, 21, 21, 0.05), 0px 1px 5px 0px rgba(21, 21, 21, 0.15);
+  position: absolute;
+  z-index: 5;
+  transition: background-color 0.2s ease-in-out; }
+  @media (min-width: 900px) {
+    .tag {
+      height: 40px;
+      width: 40px;
+      border-radius: 20px; } }
+  .tag svg {
+    max-width: 20px;
+    height: auto; }
+    @media (min-width: 900px) {
+      .tag svg {
+        width: 20px;
+        height: auto; } }
+  .tag.active {
+    background-color: #dc6666;
+    transition: background-color 0.2s ease-in-out; }
+    .tag.active > svg * {
+      fill: white; }
+    .tag.active .tag-details {
+      z-index: 99; }
+  .tag:hover {
+    background-color: #dc6666;
+    transition: background-color 0.2s ease-in-out;
+    cursor: pointer; }
+    .tag:hover > svg * {
+      fill: white; }
+
+.tag:hover > .tag-details, .tag.active > .tag-details {
+  opacity: 1;
+  transition: opacity .3s ease-in;
+  visibility: visible; }
+
+button {
+  color: #f7f5f2;
+  background-color: #dc6666;
+  border: none;
+  border-radius: 30px;
+  font: inherit;
+  padding: 0.75em 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  margin: auto; }
+  button:hover {
+    cursor: pointer;
+    background-color: #c75d5d;
+    transition: all 0.2s ease-in-out; }
+    button:hover svg {
+      margin-left: 10px;
+      transition: margin-left 0.2s ease-in; }
+  button svg {
+    height: 12px;
+    width: 18px;
+    color: white;
+    margin-left: 15px;
+    transition: margin-left 0.2s ease-out; }
+    button svg * {
+      fill: white; }
+
+
+</style>
+
+</head>
+<body>
+
+
+<template>
+    <div id="app">
+          <div class="hero-container container-xl">
+          <div class="hero row">
+              <div class="hero__background">
+                <div class="hero__main">
+                  <div class="row">
+                  <div class="container">
+                    <div class="hero__headline">
+                      <h1>{{ hero_title }}</h1>
+                      <p class="hero-subhero">{{ hero_subtitle }}</p>
+                      <p class="hero-text">{{ hero_sale }}</p>
+                      <a class="hero-cta" v-if="this.hero_cta" href="">
+                        <button>
+                          {{ hero_cta.text }}
+                          <i class="arrow">
+                            <svg
+                              width="18px"
+                              height="12px"
+                              viewBox="0 0 18 12"
+                              version="1.1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              xmlns:xlink="http://www.w3.org/1999/xlink"
+                            >
+                              <g
+                                id="Desktop"
+                                stroke="none"
+                                stroke-width="1"
+                                fill="none"
+                                fill-rule="evenodd"
+                              >
+                                <g
+                                  id="Desk---Hero---Dialogs"
+                                  transform="translate(-1099.000000, -521.000000)"
+                                  fill="#676564"
+                                >
+                                  <g
+                                    id="Dialogs"
+                                    transform="translate(308.000000, 394.000000)"
+                                  >
+                                    <g
+                                      id="Sloan"
+                                      transform="translate(643.000000, 40.000000)"
+                                    >
+                                      <polygon
+                                        id="Arrow"
+                                        points="162.2 92 148 92 148 94 162.2 94 158.6 97.6 160 99 166 93 160 87 158.6 88.4"
+                                      ></polygon>
+                                    </g>
+                                  </g>
+                                </g>
+                              </g>
+                            </svg>
+                          </i>
+                        </button>
+                      </a>
+                      <div class="drag-to-explore">
+                  <svg
+                    width="18px"
+                    height="12px"
+                    viewBox="0 0 18 12"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <g
+                      id="Desktop"
+                      stroke="none"
+                      stroke-width="1"
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <g
+                        id="Desk---Hero---Dialogs"
+                        transform="translate(-1099.000000, -521.000000)"
+                        fill="#676564"
+                      >
+                        <g
+                          id="Dialogs"
+                          transform="translate(308.000000, 394.000000)"
+                        >
+                          <g
+                            id="Sloan"
+                            transform="translate(643.000000, 40.000000)"
+                          >
+                            <polygon
+                              id="Arrow"
+                              points="162.2 92 148 92 148 94 162.2 94 158.6 97.6 160 99 166 93 160 87 158.6 88.4"
+                            ></polygon>
+                          </g>
+                        </g>
+                      </g>
+                    </g>
+                  </svg>
+                  <p>Drag to explore</p>
+                  <svg
+                    width="18px"
+                    height="12px"
+                    viewBox="0 0 18 12"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <g
+                      id="Desktop"
+                      stroke="none"
+                      stroke-width="1"
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <g
+                        id="Desk---Hero---Dialogs"
+                        transform="translate(-1099.000000, -521.000000)"
+                        fill="#676564"
+                      >
+                        <g
+                          id="Dialogs"
+                          transform="translate(308.000000, 394.000000)"
+                        >
+                          <g
+                            id="Sloan"
+                            transform="translate(643.000000, 40.000000)"
+                          >
+                            <polygon
+                              id="Arrow"
+                              points="162.2 92 148 92 148 94 162.2 94 158.6 97.6 160 99 166 93 160 87 158.6 88.4"
+                            ></polygon>
+                          </g>
+                        </g>
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+                <div v-for="tag in tags" class="tag" tabindex="0"  @click="toggleDetails" @keyup.enter="toggleDetails" v-bind:style="[isDesktop ? {'bottom': tag.desktop_bottom + '%'} : {'bottom': tag.position_bottom + '%'}, isDesktop ? {'left': tag.desktop_left + '%'} : {'left': tag.position_left + '%'}]">
+                    <svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                      <defs>
+                        <path
+                          d="M23.528,15.664 L16.328,8.464 C16.04,8.176 15.64,8 15.2,8 L9.6,8 C8.72,8 8,8.72 8,9.6 L8,15.2 C8,15.64 8.176,16.04 8.472,16.336 L15.672,23.536 C15.96,23.824 16.36,24 16.8,24 C17.24,24 17.64,23.824 17.928,23.528 L23.528,17.928 C23.824,17.64 24,17.24 24,16.8 C24,16.36 23.816,15.952 23.528,15.664 Z M10.8,12 C10.136,12 9.6,11.464 9.6,10.8 C9.6,10.136 10.136,9.6 10.8,9.6 C11.464,9.6 12,10.136 12,10.8 C12,11.464 11.464,12 10.8,12 Z"
+                          id="path-1"
+                        ></path>
+                      </defs>
+                      <g
+                        id="Mobile"
+                        stroke="none"
+                        stroke-width="1"
+                        fill="none"
+                        fill-rule="evenodd"
+                      >
+                        <g
+                          id="Mobile---Hero---Right"
+                          transform="translate(-313.000000, -481.000000)"
+                        >
+                          <g
+                            id="Tags"
+                            transform="translate(-364.000000, 295.000000)"
+                          >
+                            <g
+                              id="Label-Copy-4"
+                              transform="translate(669.000000, 178.000000)"
+                            >
+                              <mask id="mask-2" fill="white">
+                                <use xlink:href="#path-1"></use>
+                              </mask>
+                              <use
+                                id="Shape"
+                                fill="#676564"
+                                fill-rule="nonzero"
+                                xlink:href="#path-1"
+                              ></use>
+                            </g>
+                          </g>
+                        </g>
+                      </g>
+                    </svg>
+                  <div
+                    class="tag-details" :class="tag.position"
+                  >
+                    <div class="top-details">
+                      <div>
+                        <p>{{ tag.title }}</p>
+                        <p>{{ tag.description }}</p>
+                      </div>
+                      <a v-bind:href="tag.link">
+                        <button tabindex='-1'><span class="sr-only"> Tatum Sectional</span>{{ tag.button_text || "Shop now" }}</button>
+                      </a>
+                    </div>
+                    <div class="bottom-details">
+                      <a href="">
+                        Shop all {{ tag.category }}
+                        <i class="arrow">
+                          <svg
+                            width="18px"
+                            height="12px"
+                            viewBox="0 0 18 12"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                          >
+                            <g
+                              id="Desktop"
+                              stroke="none"
+                              stroke-width="1"
+                              fill="none"
+                              fill-rule="evenodd"
+                            >
+                              <g
+                                id="Desk---Hero---Dialogs"
+                                transform="translate(-1099.000000, -521.000000)"
+                                fill="#676564"
+                              >
+                                <g
+                                  id="Dialogs"
+                                  transform="translate(308.000000, 394.000000)"
+                                >
+                                  <g
+                                    id="Sloan"
+                                    transform="translate(643.000000, 40.000000)"
+                                  >
+                                    <polygon
+                                      id="Arrow"
+                                      points="162.2 92 148 92 148 94 162.2 94 158.6 97.6 160 99 166 93 160 87 158.6 88.4"
+                                    ></polygon>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                          </svg>
+                        </i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <picture> 
+                  <img
+                    id="background-image"
+                    alt=""
+                    srcset="
+                      https://raw.githubusercontent.com/shopkins8/interior-define/main/hero-background.jpg
+                    "
+                  />
+                </picture>
+              </div>
+            
+          </div>
+  </div>
+     
+  </div>
+</template>
+
+
+<script>
+    new Vue({
+    el: "#app",
+    data: {
+        hero_title: "the refresh sale",
+        hero_subtitle:
+            "15% off sitewide to recharge your living space. Ends Friday, 2/19",
+        hero_sale: "15+ collections, 100+ fabrics, 20+ legs",
+        hero_cta: {
+            link: "/sale",
+            text: "Start customizing",
+            icon: "arrow"
+        },
+        tags: {
+            rug: {
+                title: "Payton",
+                description: "Hand knotted rug",
+                link: "/payton",
+                button_text: "",
+                category: "rugs",
+                category_link: "/rugs",
+                position_bottom: "10",
+                position_left: "20",
+                desktop_bottom: "7",
+                desktop_left: "20",
+                position: "top right",
+                aria_label: "",
+            },
+            chair: {
+                title: "Jason Wu Chair",
+                description: "Performance Velvet Rust",
+                link: "/jason-wu-chair",
+                button_text: "",
+                category: "chairs",
+                category_link: "/chairs",
+                position_bottom: "53",
+                position_left: "13",
+                desktop_bottom: "47",
+                desktop_left: "18",
+                position: "bottom right",
+                aria_label: "",
+            },
+            "coffee-table": {
+                title: "Brooks Coffee Table",
+                description: "White wash oak",
+                link: "/brooks-coffee-rtable",
+                button_text: "",
+                category: "tables",
+                category_link: "/tables",
+                position_bottom: "33",
+                position_left: "22",
+                desktop_bottom: "29",
+                desktop_left: "25",
+                position: "bottom right",
+                aria_label: "",
+            },
+            "side-table": {
+                title: "Reese Side Table",
+                description: "Painted Black",
+                link: "/reese-side-table",
+                button_text: "",
+                category: "tables",
+                category_link: "/tables",
+                position_bottom: "22",
+                position_left: "93",
+                desktop_bottom: "27",
+                desktop_left: "89",
+                position: "bottom left mobile-left",
+                aria_label: "",
+            },
+            sectional: {
+                title: "Sloan Sectional",
+                description: "Vintage Plush Pewter",
+                link: "/sloan-sectional",
+                button_text: "",
+                category: "sectionals",
+                category_link: "/sectionals",
+                position_bottom: "46",
+                position_left: "63",
+                desktop_bottom: "41",
+                desktop_left: "63",
+                position: "bottom right tablet-left",
+                aria_label: "",
+            }
+        },
+        isDesktop: false,
+    },
+    methods: {
+        clearActiveTags() {
+            let activeTags = document.querySelectorAll('.tag.active');
+            activeTags.forEach(tag => {
+                tag.classList.remove('active');
+            });
+        },
+        toggleDetails(e) {
+            this.clearActiveTags();
+            let parentTag = e.target.closest('.tag');
+            e.target.closest('.tag').classList.toggle('active');
+            if(!this.isDesktop) {
+                let tagDetails = document.querySelector('.tag.active .tag-details');
+                tagDetails.classList.add('forced-center');
+            }
+        },
+        onResize() {
+            if (window.innerWidth > 900) {
+                this.isDesktop = true;
+            } else {
+                this.isDesktop = false;
+            }
+        }
+    },
+    mounted() {
+        window.addEventListener('click', (e) => {
+            console.log(e.target.closest('.tag'));
+            if(!(e.target.closest('.tag'))) {
+                this.clearActiveTags();
+            }
+            if(e.target.matches('.tag')) {
+                return;
+            }
+
+        });
+
+        window.addEventListener('resize', this.onResize);
+        const screenWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        if (screenWidth > 900) {
+            this.isDesktop = true;
+        } else {
+            this.isDesktop = false;
+        }
+
+        // Calculate exact middle of hero image by getting the width of image, subtract the width of the window and divide by 2.
+        let scrollAmount = (document.getElementById("background-image").offsetWidth - window.innerWidth) / 2;
+        // Position the hero's X axis scroll to the middle.
+        document.getElementsByClassName('hero')[0].scrollLeft = scrollAmount;
+
+        const hero = document.getElementsByClassName('hero')[0];
+        hero.style.cursor = 'grab';
+        let pos = { top: 0, left: 0, x: 0, y: 0 };
+        const mouseDownHandler = function(e) {
+            hero.style.cursor = 'grabbing';
+            hero.style.userSelect = 'none';
+
+            pos = {
+                left: hero.scrollLeft,
+                top: hero.scrollTop,
+                // Get the current mouse position
+                x: e.clientX,
+                y: e.clientY,
+            };
+            document.addEventListener('mousemove', mouseMoveHandler);
+            document.addEventListener('mouseup', mouseUpHandler);
+        };
+        const mouseMoveHandler = function(e) {
+            // How far the mouse has been moved
+            const dx = e.clientX - pos.x;
+            const dy = e.clientY - pos.y;
+            // Scroll the element
+            hero.scrollTop = pos.top - dy;
+            hero.scrollLeft = pos.left - dx;
+
+            document.getElementsByClassName('drag-to-explore')[0].classList.add('hidden');
+        };
+        const mouseUpHandler = function() {
+            hero.style.cursor = 'grab';
+            hero.style.removeProperty('user-select');
+            document.removeEventListener('mousemove', mouseMoveHandler);
+            document.removeEventListener('mouseup', mouseUpHandler);
+        };
+        // Handler
+        hero.addEventListener('mousedown', mouseDownHandler);
+        hero.addEventListener('touchmove', () => {
+            document.getElementsByClassName('drag-to-explore')[0].classList.add('hidden');
+        });
+
+
+    }
+}); 
+</script>
+
+
+</body>
+</html>
+
+
+
+
